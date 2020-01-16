@@ -25,6 +25,10 @@ const server = http.createServer( (req, res) => {
                 <input type="text" name="note">
                 <button type="submit">Add note</button>
             </form>
+            <form action="delete" method="POST">
+                <input type="number" name="index">
+                <button type="submit">Delete note</button>
+            </form>
         </body>
         </html>`);
         res.statusCode = 200; //OK
@@ -44,6 +48,26 @@ const server = http.createServer( (req, res) => {
             const body = Buffer.concat(chunks).toString();
             const note = body.split('=')[1];
             notes.push(note);
+            //console.log(body);
+            res.statusCode = 303; //Redirect
+            res.setHeader('Location', '/');
+            res.end();
+        });
+        return;
+    }
+    else if(url === '/delete'){
+        console.log('/delete')
+
+        const chunks = [];
+        req.on('data', (chunk)=>{
+            chunks.push(chunk);
+        });
+
+        req.on('end', ()=>{
+            //console.log(chunks);
+            const body = Buffer.concat(chunks).toString();
+            const index = body.split('=')[1];
+            notes.splice(index,1);
             //console.log(body);
             res.statusCode = 303; //Redirect
             res.setHeader('Location', '/');
