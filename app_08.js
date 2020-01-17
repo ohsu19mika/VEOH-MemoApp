@@ -18,7 +18,13 @@ const server = http.createServer( (req, res) => {
         <body>`);
 
         notes.forEach( (value, index) => {
-            res.write(`<div>note: ${value}, index: ${index}</div>`);
+            res.write(`
+            <div>note: ${value}, index: ${index}
+            <form action="delete-note" method="POST">
+                <input type="hidden" name="index" value="${index}">
+                <button type="submit">Delete</button>
+            </form>
+            </div>`);
         });
 
         res.write(`<form action="add-note" method="POST">
@@ -74,7 +80,7 @@ const server = http.createServer( (req, res) => {
             //console.log(chunks);
             const body = Buffer.concat(chunks).toString();
             const index = body.split('=')[1];
-            if (index != ""){
+            if (index != "" && index != null){
                 notes.splice(index,1);
             }            
             //console.log(body);
