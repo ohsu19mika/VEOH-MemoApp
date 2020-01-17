@@ -26,7 +26,14 @@ const server = http.createServer( (req, res) => {
                 <button type="submit">Add note</button>
             </form>
             <form action="delete" method="POST">
-                <input type="number" name="index">
+                <input type="number" name="index" min="0" max="`);
+        if (notes.length != 0){
+            res.write(`${notes.length-1}`);
+        } else{
+            res.write('0');
+        }
+        
+        res.write(`">
                 <button type="submit">Delete note</button>
             </form>
         </body>
